@@ -1,8 +1,9 @@
 import time
-from pathlib import Path
-import torch
-import pyaudio
 import wave
+from pathlib import Path
+
+import pyaudio
+import torch
 
 torch._C._jit_set_profiling_mode(False)
 

@@ -1,9 +1,10 @@
-from pickle import TRUE
 import time
-import requests
-import aispeech
 import wave
+from pickle import TRUE
 
+import requests
+
+import aispeech
 import transcribe
 
 message_log = []

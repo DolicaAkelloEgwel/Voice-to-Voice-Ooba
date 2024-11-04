@@ -1,8 +1,10 @@
 from pickle import TRUE
-import speech_recognition as sr
-import chatbot
-import whisper
 from threading import Thread
+
+import speech_recognition as sr
+import whisper
+
+import chatbot
 
 whisper_filter_list = [
     "you",
@@ -15,6 +17,14 @@ MIC_OUTPUT_FILENAME = "outfile.wav"
 VOICE_OUTPUT_FILENAME = "audioResponse.wav"
 
 logging_eventhandlers = []
+
+MIC_INDEX = -1
+
+for index, name in enumerate(sr.Microphone.list_microphone_names()):
+    print(f"{index}, {name}")
+
+while MIC_INDEX < 0:
+    MIC_INDEX = int(input("Choose the microphone index: "))
 
 
 def initialize_model():
@@ -46,7 +56,7 @@ def stop_record_auto():
 
 def listen():
     r = sr.Recognizer()
-    mic = sr.Microphone(device_index=9)
+    mic = sr.Microphone(device_index=MIC_INDEX)
     print("Mic:", mic)
     with mic as source:
         r.adjust_for_ambient_noise(source, duration=0.2)
