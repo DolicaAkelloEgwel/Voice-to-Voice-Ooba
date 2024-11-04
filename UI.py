@@ -1,16 +1,7 @@
-import json
-import time
-from enum import Enum
-from threading import Event, Thread
+from threading import Thread
 
 import customtkinter as ctk
-import keyboard
-import numpy as np
-import pyaudio
-import sounddevice as sd
-import speech_recognition as sr
 
-import aispeech
 import chatbot
 import transcribe
 
