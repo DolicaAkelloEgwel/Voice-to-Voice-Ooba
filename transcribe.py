@@ -1,4 +1,3 @@
-from pickle import TRUE
 from threading import Thread
 
 import speech_recognition as sr
@@ -56,9 +55,7 @@ def stop_record_auto():
 
 def listen():
     r = sr.Recognizer()
-    mic = sr.Microphone(device_index=MIC_INDEX)
-    print("Mic:", mic)
-    with mic as source:
+    with sr.Microphone(device_index=MIC_INDEX) as source:
         r.adjust_for_ambient_noise(source, duration=0.2)
         print("Speak now")
         audio = r.listen(source)
@@ -74,7 +71,7 @@ def listen():
             task="transcribe",
             language="english",
             without_timestamps=True,
-            fp16=False if model.device == "cpu" else None,
+            fp16=True if model.device == "cuda" else False,
         )
         result = whisper.decode(model, mel, options)
         user_input = result.text
