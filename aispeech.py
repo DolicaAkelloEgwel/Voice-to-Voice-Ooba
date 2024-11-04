@@ -7,11 +7,16 @@ import torch
 
 torch._C._jit_set_profiling_mode(False)
 
+if torch.cuda.is_available():
+    DEVICE = "cuda"
+else:
+    DEVICE = "cpu"
+
 
 VOICE_OUTPUT_FILENAME = "audioResponse.wav"
 
 # so sending input from file to file lol
-device = torch.device("cpu")
+device = torch.device(DEVICE)
 sample_rate = 48000
 speaker = "en_21"
 params = {
@@ -20,7 +25,7 @@ params = {
     "language": "en",
     "model_id": "v3_en",
     "sample_rate": 48000,
-    "device": "cpu",
+    "device": DEVICE,
     "show_text": True,
     "autoplay": True,
     "voice_pitch": "medium",
