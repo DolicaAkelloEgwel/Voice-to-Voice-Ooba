@@ -1,16 +1,13 @@
 import time
-import wave
-from pickle import TRUE
 
 import requests
 
 import aispeech
-import transcribe
 
 message_log = []
 AI_RESPONSE_FILENAME = "ai-response.txt"
 logging_eventhandlers = []
-PORT = 7860
+PORT = 5000
 history = []
 
 
@@ -19,7 +16,7 @@ def send_user_input(user_input):
     print(message_log)
     log_message(f"User: {user_input}")
     message_log.append({"role": "user", "content": user_input})
-    url = f"http://127.0.0.1:{PORT}/v1/chat/completions"
+    url = f"http://localhost:{PORT}/v1/chat/completions"
     headers = {"Content-Type": "application/json"}
     json = {
         "messages": [
