@@ -61,7 +61,7 @@ class ChatFrame(ctk.CTkFrame):
         text = self.user_input_var.get()
         self.user_input_var.set("")
         thread = Thread(
-            target=chatbot.send_user_input,
+            target=chatbot.send_user_input_gpt4all,
             args=[
                 text,
             ],

@@ -1,6 +1,7 @@
 import time
 
 import requests
+from gpt4all import GPT4All
 
 import aispeech
 
@@ -10,8 +11,10 @@ logging_eventhandlers = []
 PORT = 5000
 history = []
 
+MODEL = GPT4All("Phi-3-mini-4k-instruct.Q4_0.gguf")
 
-def send_user_input(user_input):
+
+def send_user_input_api(user_input):
     global message_log
     print(message_log)
     log_message(f"User: {user_input}")
@@ -39,6 +42,20 @@ def send_user_input(user_input):
         log_message(f"{text}")
         aispeech.initialize(text)
         time.sleep(0.1)
+
+
+def send_user_input_gpt4all(user_input):
+    global message_log
+    print(message_log)
+    log_message(f"User: {user_input}")
+    message_log.append({"role": "user", "content": user_input})
+
+    with MODEL.chat_session():
+        output = MODEL.generate(user_input, max_tokens=1024)
+        log_message(f"{output}")
+        history.append({"role": "system", "content": output})
+        history.append({"role": "user", "content": user_input})
+        aispeech.initialize(output)
 
 
 def log_message(message_text):
