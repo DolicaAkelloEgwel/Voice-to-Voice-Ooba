@@ -6,7 +6,6 @@ from gpt4all import GPT4All
 import aispeech
 
 message_log = []
-AI_RESPONSE_FILENAME = "ai-response.txt"
 logging_eventhandlers = []
 PORT = 5000
 global GPT4ALL_HISTORY
@@ -14,6 +13,7 @@ GPT4ALL_HISTORY = []
 API_HISTORY = []
 
 INITIAL_PROMPT = "You are an AI character who can chat with people about whatever. Please keep your responses to around 10 sentences or less."
+GPT4ALL_HISTORY.append({"role": "system", "content": INITIAL_PROMPT})
 
 
 def choose_first_gpu_if_available():
@@ -37,7 +37,7 @@ def send_user_input_api(user_input):
     json = {
         "messages": [
             {"role": "system", "content": f"You are an ai assistant"},
-            {"role": "user", "content": f"{user_input}"},
+            {"role": "user", "content": user_input},
         ],
         "history": f"{API_HISTORY}",
         "stop": ["### Instruction:"],
