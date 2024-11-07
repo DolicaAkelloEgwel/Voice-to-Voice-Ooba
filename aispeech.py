@@ -38,7 +38,7 @@ params = {
 def initialize(text):
     content = text
 
-    model, example_text = torch.hub.load(
+    model, _ = torch.hub.load(
         repo_or_dir="snakers4/silero-models",
         model="silero_tts",
         language=params["language"],
@@ -53,7 +53,7 @@ def initialize(text):
         sample_rate=sample_rate,
         audio_path=str(output_file),
     )
-    print("******************Ai SPEEKING***************************")
+    print("******************AI SPEEKING***************************")
 
     CHUNK = 1024
     wf = wave.open("audioResponse.wav", "rb")
@@ -75,9 +75,3 @@ def initialize(text):
     p.terminate()
 
     time.sleep(0.1)
-
-
-if __name__ == "__main__":
-
-    oobaapi()
-    PlayAudio()
