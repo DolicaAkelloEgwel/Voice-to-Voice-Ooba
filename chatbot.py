@@ -13,6 +13,8 @@ global GPT4ALL_HISTORY
 GPT4ALL_HISTORY = None
 API_HISTORY = []
 
+INITIAL_PROMPT = "You are an AI character who can chat with people about whatever. Please keep your responses to around 10 sentences or less."
+
 
 def choose_first_gpu_if_available():
     gpus = GPT4All.list_gpus()
@@ -64,7 +66,7 @@ def send_user_input_gpt4all(user_input):
     MODEL._history = GPT4ALL_HISTORY
     print("History: ", MODEL._history)
 
-    with MODEL.chat_session():
+    with MODEL.chat_session(system_prompt=INITIAL_PROMPT):
         output = MODEL.generate(user_input, max_tokens=1024)
         log_message(f"{output}")
         GPT4ALL_HISTORY = MODEL._history
