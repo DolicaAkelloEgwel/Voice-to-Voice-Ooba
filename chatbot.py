@@ -19,7 +19,7 @@ INITIAL_PROMPT = "You are an AI character who can chat with people about whateve
 def choose_first_gpu_if_available():
     gpus = GPT4All.list_gpus()
     if gpus:
-        return GPT4All.list_gpus()[0].split(":")[0]
+        return gpus[0].split(":")[0]
     return None
 
 
