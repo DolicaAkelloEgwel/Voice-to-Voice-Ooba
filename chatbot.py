@@ -10,7 +10,7 @@ AI_RESPONSE_FILENAME = "ai-response.txt"
 logging_eventhandlers = []
 PORT = 5000
 global GPT4ALL_HISTORY
-GPT4ALL_HISTORY = None
+GPT4ALL_HISTORY = []
 API_HISTORY = []
 
 INITIAL_PROMPT = "You are an AI character who can chat with people about whatever. Please keep your responses to around 10 sentences or less."
@@ -64,12 +64,12 @@ def send_user_input_gpt4all(user_input):
 
     global GPT4ALL_HISTORY
     MODEL._history = GPT4ALL_HISTORY
-    print("History: ", MODEL._history)
 
     with MODEL.chat_session(system_prompt=INITIAL_PROMPT):
         output = MODEL.generate(user_input, max_tokens=1024)
         log_message(f"{output}")
-        GPT4ALL_HISTORY = MODEL._history
+        GPT4ALL_HISTORY.append({"role": "user", "content": user_input})
+        GPT4ALL_HISTORY.append({"role": "system", "content": output})
         aispeech.initialize(output)
 
 
