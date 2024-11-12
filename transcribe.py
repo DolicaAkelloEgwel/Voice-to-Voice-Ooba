@@ -83,7 +83,7 @@ def listen():
             print(f"Input filtered.")
             return
 
-        chatbot.send_user_input(user_input)
+        chatbot.send_user_input_gpt4all(user_input)
         return
 
 
