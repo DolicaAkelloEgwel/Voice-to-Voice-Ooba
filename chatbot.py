@@ -65,11 +65,21 @@ def send_user_input_gpt4all(user_input):
     global GPT4ALL_HISTORY
     MODEL._history = GPT4ALL_HISTORY
 
+    output = []
     with MODEL.chat_session(system_prompt=INITIAL_PROMPT):
-        output = MODEL.generate(user_input, max_tokens=1024)
-        log_message(f"{output}")
+        for token in MODEL.generate(
+            user_input, max_tokens=1150, temp=0.1, top_p=0.1, top_k=10, streaming=True
+        ):
+            if token == ":" and output[-1].lower() == "user":
+                # try to prevent hallucination weirdness
+                print("We're in hallucination land...")
+                output = output[:-1]
+                break
+            output.append(token)
+        output = "".join(output)
         GPT4ALL_HISTORY.append({"role": "user", "content": user_input})
         GPT4ALL_HISTORY.append({"role": "system", "content": output})
+        log_message(output)
         aispeech.initialize(output)
 
 
