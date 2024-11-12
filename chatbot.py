@@ -16,6 +16,10 @@ INITIAL_PROMPT = "You are an AI character who can chat with people about whateve
 GPT4ALL_HISTORY.append({"role": "system", "content": INITIAL_PROMPT})
 
 
+def _combine_output_tokens(output):
+    return "".join(output).strip() + "\n"
+
+
 def choose_first_gpu_if_available():
     gpus = GPT4All.list_gpus()
     if gpus:
@@ -52,7 +56,7 @@ def send_user_input_api(user_input):
         API_HISTORY.append({"role": "system", "content": result})
         API_HISTORY.append({"role": "user", "content": user_input})
         text = result
-        log_message(f"{text}")
+        log_message("AI: " + text)
         aispeech.initialize(text)
         time.sleep(0.1)
 
@@ -68,7 +72,7 @@ def send_user_input_gpt4all(user_input):
     output = []
     with MODEL.chat_session(system_prompt=INITIAL_PROMPT):
         for token in MODEL.generate(
-            user_input, max_tokens=1150, temp=0.1, top_p=0.1, top_k=10, streaming=True
+            user_input, max_tokens=150, temp=0.1, top_p=0.1, top_k=10, streaming=True
         ):
             if token == ":" and output[-1].lower() == "user":
                 # try to prevent hallucination weirdness
@@ -76,10 +80,10 @@ def send_user_input_gpt4all(user_input):
                 output = output[:-1]
                 break
             output.append(token)
-        output = "".join(output)
+        output = _combine_output_tokens(output)
         GPT4ALL_HISTORY.append({"role": "user", "content": user_input})
         GPT4ALL_HISTORY.append({"role": "system", "content": output})
-        log_message(output)
+        log_message("AI: " + output)
         aispeech.initialize(output)
 
 
